@@ -78,8 +78,8 @@ displayContainer(data.data );
 // document.getElementById('btn-show-all').addEventListener('click', function(){
 //    processSearch();
 // })
-// const loadPhoneDetails = async id =>{
-//     const url =`https://openapi.programming-hero.com/api/phone/${id}`;
+// const loadDetails = async id =>{
+//     const url =`https://openapi.programming-hero.com/api/news/{news_id}`;
 //     const res = await fetch(url);
 //     const data = await res.json();
 //     displayPhoneDetails(data.data);
@@ -90,10 +90,11 @@ displayContainer(data.data );
 //     modalTitle.innerText = phone.name;
 //     const phoneDetails = document.getElementById('phone-details');
 //     phoneDetails.innerHTML =`
-//     <p>Release Date: ${phone.releaseDate ? phone.releaseDate : 'No Release Date Found'}<p>
+//     <p>: ${phone.releaseDate ? phone.releaseDate : 'No Release Date Found'}<p>
 //     <p>Storage: ${phone.mainFeatures ? phone.mainFeatures.storage:'No storage Information'}</p>
 //     <p>Others: ${phone.others ? phone.others.Bluetooth : 'No Bluetooth Information'}</p>
 //     `
 // }
 
 // //  loadPhones();
+ 
