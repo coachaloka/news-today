@@ -1,8 +1,8 @@
-const loadPhones = async (searchText) =>{
-    const url =  `https://openapi.programming-hero.com/api/phones?search=${searchText}`
+const loadContainer = async (searchText) =>{
+    const url =  `https://openapi.programming-hero.com/api/news/category/{category_id}`
 const res = await fetch(url);
 const data = await res.json();
-displayPhones(data.data );
+displayContainer(data.data );
 }
 
 // const displayPhones = (phones, dataLimit) =>{
