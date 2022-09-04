@@ -111,7 +111,8 @@ const displayNewsDetails = (news)=>{
     });
 }
 
-// spinner or loader function
+// / spinner or loader function
+
 const toggleSpinner = isLoading=>{
     const loaderSection = document.getElementById('loader');
     if(isLoading){
@@ -120,4 +121,6 @@ const toggleSpinner = isLoading=>{
       loaderSection.classList.add('d-none');
     }
   }
+
+  
 loadNews();
