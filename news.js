@@ -10,7 +10,7 @@ const loadNews = ()=>{
 //display categories
 const showCategory = (newsCategory)=>{
 
-    const category = document.getElementById('category');
+    const category = document.getElementById('container');
     
     newsCategory.forEach(news=>{
         const div = document.createElement('div')
@@ -43,7 +43,7 @@ const displayNewsCatergory = (news)=>{
         <h5>${news.length? news.length: 'No'} News found</h5>
     `;
 
-    const categoryDetails = document.getElementById('category-details');
+    const categoryDetails = document.getElementById('container-details');
     //remove previes li list automatically.
     categoryDetails.innerHTML = ``;
     
@@ -102,8 +102,8 @@ const loadNewsDetails=(news_id)=>{
 }
 
 //display news details by ID
-const displayContainer = document.getElementById('exampleModalLabel');
-const newsDetails = document.getElementById('news-details');
+const displayContainer = document.getElementById('displayModalLabel');
+const newsDetails = document.getElementById('More-news');
 const displayNewsDetails = (news)=>{
     news.forEach(news=>{
         displayContainer.innerText=`${news.author.name? news.author.name: 'no author'}`;
@@ -114,7 +114,7 @@ const displayNewsDetails = (news)=>{
 // / spinner or loader function
 
 const toggleSpinner = isLoading=>{
-    const loaderSection = document.getElementById('loader');
+    const loaderSection = document.getElementById('loading');
     if(isLoading){
       loaderSection.classList.remove('d-none');
     } else{
