@@ -1,100 +1,123 @@
-const loadContainer = async (searchText) =>{
-    const url =  `https://openapi.programming-hero.com/api/news/category/{category_id}`
-const res = await fetch(url);
-const data = await res.json();
-displayContainer(data.data );
+
+//load api data
+const loadNews = ()=>{
+    const url = 'https://openapi.programming-hero.com/api/news/categories'
+    fetch(url)
+        .then(res=>res.json())
+        .then(data=>showCategory(data.data.news_category))
+        .catch(error=>console.log(error))
+}
+//display categories
+const showCategory = (newsCategory)=>{
+
+    const category = document.getElementById('category');
+    
+    newsCategory.forEach(news=>{
+        const div = document.createElement('div')
+        div.innerHTML = `
+        <ul>
+            <li onclick="loadNewsCategory('${news.category_id}')"><a href="#">${news.category_name}</a>
+            </li>
+        </ul>
+        `;
+        category.appendChild(div);
+    });
+}
+// laod all news by categories
+const loadNewsCategory = (category_id)=>{
+    // start loader
+    toggleSpinner(true)
+    const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`
+    fetch(url)
+        .then(res=>res.json())
+        .then(data=>displayNewsCatergory(data.data.sort((a, b)=> b.total_view - a.total_view)))
+        .catch(error=>console.log(error))
 }
 
-// const displayPhones = (phones, dataLimit) =>{
-//     const phonesContainer = document.getElementById('phone-container');
-//     phonesContainer.textContent = '';
-//     // display 10 phones only
-//     const showAll = document.getElementById('show-All');
-//     if(dataLimit && phones.length > 10){
-//         phones = phones.slice(0,10);
-//         showAll.classList.remove('d-none');
-//     }
-//     else{
-//         showAll.classList.add(d-none);
-//     }
+// display all news when click categories
+const displayNewsCatergory = (news)=>{
     
+    // display news element
+    const newsElement = document.getElementById('newsNumber');
+    newsElement.innerHTML=`
+        <h5>${news.length? news.length: 'No'} News found</h5>
+    `;
 
-//     // display no phone found
-//     const noPhone = document.getElementById('no-found-message');
-//     if(phones.length === 0){
-//         noPhone.classList.remove('d-none')
-//     }
-//     else{
-//         noPhone.classList.add('d-none');
-//     }
-//     phones.forEach(phone =>{
-// const phoneDive = document.createElement('div');
-// phoneDive.classList.add('col');
-// phoneDive.innerHTML = `
-// <div class="card p-4">
-//     <img src="${phone.image}" class="card-img-top" alt="...">
-//     <div class="card-body">
-//             <h5 class="card-title">${phone.phone_name}</h5>
-//             <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-//             <button onclick="loadPhoneDetails('${phone.slug}')" href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailMdal">Show Details</button>
+    const categoryDetails = document.getElementById('category-details');
+    //remove previes li list automatically.
+    categoryDetails.innerHTML = ``;
+    
+    // show warning msg if no news found 
+    const noNews = document.getElementById('no-news');
+    noNews.innerHTML=``;
+    if(news.length===0){
+        noNews.innerHTML=`<h2>No News Updated!</h2>`;
+        return; 
+    }
 
-//     </div>
-// </div>
-//     `;
-//     phonesContainer.appendChild(phoneDive);
-              
-//     })
-//     // stop spinner or loader
-//     toggleSpinner(false);
-// }
-// const processSearch = (dataLimit) =>{
-//     toggleSpinner(true);
-//     const searchField = document.getElementById('search-field');
-//     const searchText = searchField.value;
-//     loadPhones(searchText, dataLimit);
-// }
-// // handle search button click
-// document.getElementById('btn-search').addEventListener('click', function(){
-//     // start loader
-//   processSearch(10);
-// })
-// // search input field enter key handlaer
-// document.getElementById('search-field').addEventListener('keypress', function (e){
-//     if (e.key === 'Enter'){
-//     processSearch(10);
-//     }
-// });
+    // apply loop to get data from api.
+    news.forEach(news=>{
+         
+        const div = document.createElement('div');
+        div.innerHTML = `
+            <div class="card sm-12 md-6 mb-3">
+            <div class="row g-0">
+            <div class="col-md-4">
+                <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">${news.title}</h5>
+                    <p class="card-text">${news.details.slice(0, 150) + "..."}</p>
+                    <div class="d-flex m-2">
+                        <img src="${news.author.img
+                        }" class="img-fluid rounded-start img-custom p-1" alt="...">
+                        <p class="ms-3">${news.author.name?news.author.name:"No Author"}</p>
+                        <h6 class="mx-auto">Total View: ${news.total_view
+                        }</h6>
+                        <button onclick="loadNewsDetails('${news._id
 
-// const toggleSpinner = isLoading =>{
-//     const loaderSection = document.getElementById('loader');
-//     if(isLoading){
-//         loaderSection.classList.remove('d-none')
-//     }
-//     else{
-//         loaderSection.classList.add ('d-none');
-//     }
-// }
-// // not the best way to load show all
-// document.getElementById('btn-show-all').addEventListener('click', function(){
-//    processSearch();
-// })
-// const loadDetails = async id =>{
-//     const url =`https://openapi.programming-hero.com/api/news/{news_id}`;
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     displayPhoneDetails(data.data);
-// }
-// const displayPhoneDetails = phone =>{
-//     console.log(phone);
-//     const modalTitle =document.getElementById('phoneDetailModalLabel');
-//     modalTitle.innerText = phone.name;
-//     const phoneDetails = document.getElementById('phone-details');
-//     phoneDetails.innerHTML =`
-//     <p>: ${phone.releaseDate ? phone.releaseDate : 'No Release Date Found'}<p>
-//     <p>Storage: ${phone.mainFeatures ? phone.mainFeatures.storage:'No storage Information'}</p>
-//     <p>Others: ${phone.others ? phone.others.Bluetooth : 'No Bluetooth Information'}</p>
-//     `
-// }
+                        }')" class="btn btn-info" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">more</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        `;
+        categoryDetails.appendChild(div)
+    });
+    // stop loader
+    toggleSpinner(false);
+}
 
-// //  loadPhones();
- 
+// load news details from api link
+
+const loadNewsDetails=(news_id)=>{
+ const url = `https://openapi.programming-hero.com/api/news/${news_id}`
+ fetch(url)
+    .then(res=>res.json())
+    .then(data=>displayNewsDetails(data.data))
+    .catch(error=>console.log(error))
+}
+
+//display news details by ID
+const displayContainer = document.getElementById('exampleModalLabel');
+const newsDetails = document.getElementById('news-details');
+const displayNewsDetails = (news)=>{
+    news.forEach(news=>{
+        displayContainer.innerText=`${news.author.name? news.author.name: 'no author'}`;
+        newsDetails.innerText= `${news.details}`;
+    });
+}
+
+// spinner or loader function
+const toggleSpinner = isLoading=>{
+    const loaderSection = document.getElementById('loader');
+    if(isLoading){
+      loaderSection.classList.remove('d-none');
+    } else{
+      loaderSection.classList.add('d-none');
+    }
+  }
+loadNews();
